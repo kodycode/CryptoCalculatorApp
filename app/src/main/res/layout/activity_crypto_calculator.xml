@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bitcoinorange"
+    tools:context=".CryptoCalculator">
+
+    <Button
+        android:id="@+id/cryptoBtn"
+        android:layout_width="67dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/fiat_crypto_view"
+        android:text="@string/cryptocurrency"
+        android:textColor="@color/bitcoinorange"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/fiatBtn"
+        android:layout_width="67dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/fiat_crypto_view"
+        android:text="@string/fiat"
+        android:textColor="@color/bitcoinorange"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="335dp"
+        android:layout_height="132dp"
+        android:layout_marginBottom="379dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginStart="25dp"
+        android:background="@drawable/result_view"
+        android:gravity="center"
+        android:text="Hello World!"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fiatBtn" />
+
+    <RelativeLayout
+        android:layout_width="335dp"
+        android:layout_height="365dp"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <Button
+            android:id="@+id/backspaceBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/input_button_view"
+            android:text="⌫ "
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/zeroBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/input_button_view"
+            android:text="0"
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/decimalBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/input_button_view"
+            android:text="."
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/sixBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/input_button_view"
+            android:text="6"
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/fiveBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/input_button_view"
+            android:text="5"
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/fourBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/input_button_view"
+            android:text="4"
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/nineBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/input_button_view"
+            android:text="9"
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/eightBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/input_button_view"
+            android:lineSpacingExtra="36sp"
+            android:text="8"
+            android:textColor="@color/bitcoinorange"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/sevenBtn"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/input_button_view"
+            android:text="7"
+            android:textColor="@color/bitcoinorange"
+            android:textSize="36sp" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
