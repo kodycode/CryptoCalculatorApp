@@ -17,10 +17,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+
 public class CryptoCalculator extends AppCompatActivity {
 
     StringBuffer inputDisplay = new StringBuffer("0");
-    JSONObject cryptoData = new JSONObject();
+    // JSONObject listingData = new JSONObject();
+    JSONObject tickerData = new JSONObject();
     // String APIKey = "57767db4-a9c8-4ba0-863e-7e299d41363a";
 
     @Override
@@ -28,31 +31,51 @@ public class CryptoCalculator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_crypto_calculator);
-        updateResult();
         getCryptoCurrencyData();
+        updateResult();
     }
 
     private void getCryptoCurrencyData() {
         final TextView displayBox = (TextView)findViewById(R.id.textView);
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.coinmarketcap.com/v2/listings/";
+        String tickerURL ="https://api.coinmarketcap.com/v2/ticker/";
 
-        // Request a string response from the provided URL.
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        // Obtains all ticker data
+        JsonObjectRequest tickerRequest = new JsonObjectRequest
+                (Request.Method.GET, tickerURL, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        cryptoData = response;
+                        tickerData = response;
+                        try {
+                            JSONObject dataObject = tickerData.getJSONObject("data");
+                            Iterator<?> keys = dataObject.keys();
+                            String key = (String) keys.next();
+                            JSONObject currencyObject = dataObject.getJSONObject(key);
+                            // System.out.println(currencyObject.toString());
+                            String currencyName = currencyObject.getString("name");
+                            String currencySymbol = currencyObject.getString("symbol");
+                            int currencyID = currencyObject.getInt("id");
+                            System.out.println(currencyName + " (" + currencySymbol + ")");
+                            /*
+                            while( keys.hasNext() ) {
+                                String key = (String) keys.next();
+                                System.out.println("Key: " + key);
+                                System.out.println("Value: " + json_array.get(key));
+                            }
+                            */
+                        } catch (JSONException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Error Alert..
+                        System.out.println(error.getMessage());
                     }
                 });
 
         // Add the request to the RequestQueue.
-        queue.add(jsonObjectRequest);
+        queue.add(tickerRequest);
     }
 
     public void updateResult() {
