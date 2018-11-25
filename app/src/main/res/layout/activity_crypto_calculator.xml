@@ -7,31 +7,51 @@
     android:background="@color/bitcoinorange"
     tools:context=".CryptoCalculator">
 
-    <Button
-        android:id="@+id/cryptoBtn"
-        android:layout_width="67dp"
-        android:layout_height="36dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/fiat_crypto_view"
-        android:text="@string/cryptocurrency"
-        android:textColor="@color/bitcoinorange"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/fiatBtn"
-        android:layout_width="67dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/fiat_crypto_view"
-        android:text="@string/fiat"
-        android:textColor="@color/bitcoinorange"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/cryptoBtn"
+            android:layout_width="30dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/fiat_crypto_view"
+            android:text="@string/cryptocurrency"
+            android:textColor="@color/bitcoinorange" />
+
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="30dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_weight="1"
+            android:onClick="clearResult"
+            android:background="@drawable/fiat_crypto_view"
+            android:text="@string/clear"
+            android:textColor="@color/bitcoinorange" />
+
+        <Button
+            android:id="@+id/fiatBtn"
+            android:layout_width="30dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/fiat_crypto_view"
+            android:text="@string/fiat"
+            android:textColor="@color/bitcoinorange" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView"
