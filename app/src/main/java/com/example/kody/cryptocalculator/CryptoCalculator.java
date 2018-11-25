@@ -12,7 +12,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,8 +23,8 @@ import java.util.Iterator;
 public class CryptoCalculator extends AppCompatActivity {
 
     StringBuffer inputDisplay = new StringBuffer("0");
-    // JSONObject listingData = new JSONObject();
     JSONObject tickerData = new JSONObject();
+    Map<String, Double> cryptoData = new HashMap<String, Double>();
     // String APIKey = "57767db4-a9c8-4ba0-863e-7e299d41363a";
 
     @Override
@@ -38,7 +39,7 @@ public class CryptoCalculator extends AppCompatActivity {
     private void getCryptoCurrencyData() {
         final TextView displayBox = (TextView)findViewById(R.id.textView);
         RequestQueue queue = Volley.newRequestQueue(this);
-        String tickerURL ="https://api.coinmarketcap.com/v2/ticker/";
+        String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0";
 
         // Obtains all ticker data
         JsonObjectRequest tickerRequest = new JsonObjectRequest
@@ -49,20 +50,18 @@ public class CryptoCalculator extends AppCompatActivity {
                         try {
                             JSONObject dataObject = tickerData.getJSONObject("data");
                             Iterator<?> keys = dataObject.keys();
-                            String key = (String) keys.next();
-                            JSONObject currencyObject = dataObject.getJSONObject(key);
-                            // System.out.println(currencyObject.toString());
-                            String currencyName = currencyObject.getString("name");
-                            String currencySymbol = currencyObject.getString("symbol");
-                            int currencyID = currencyObject.getInt("id");
-                            System.out.println(currencyName + " (" + currencySymbol + ")");
-                            /*
-                            while( keys.hasNext() ) {
+                            int count = 0;
+                            while( keys.hasNext()) {
+                                count++;
                                 String key = (String) keys.next();
-                                System.out.println("Key: " + key);
-                                System.out.println("Value: " + json_array.get(key));
+                                JSONObject currencyObject = dataObject.getJSONObject(key);
+                                String currencyName = currencyObject.getString("name");
+                                String currencySymbol = currencyObject.getString("symbol");
+                                JSONObject currencyQuotes = currencyObject.getJSONObject("quotes");
+                                JSONObject currencyFiat = currencyQuotes.getJSONObject("USD");
+                                Double currencyPrice = currencyFiat.getDouble("price");
+                                cryptoData.put(currencyName + " (" + currencySymbol + ")", currencyPrice);
                             }
-                            */
                         } catch (JSONException e) {
                             System.out.println(e.getMessage());
                         }
