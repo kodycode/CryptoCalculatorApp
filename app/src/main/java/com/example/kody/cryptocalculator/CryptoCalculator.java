@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,12 +34,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CryptoCalculator extends AppCompatActivity {
 
     StringBuffer inputDisplay = new StringBuffer("0");
     JSONObject tickerData = new JSONObject();
     HashMap<String, Double> cryptoData = new HashMap<String, Double>();
+    String fiat = "USD";
+    String cryptoName;
+    Double cryptoPrice;
     // String APIKey = "57767db4-a9c8-4ba0-863e-7e299d41363a";
 
     @Override
@@ -96,12 +102,23 @@ public class CryptoCalculator extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+    @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                System.out.println(data.getStringExtra("currencyData"));
-                // String strEditText = data.getStringExtra("editTextValue");
+                try {
+                    Pattern pattern = Pattern.compile("(?<=\\().*(?=\\))");
+                    cryptoName = data.getStringExtra("currencyName");
+                    cryptoPrice = cryptoData.get(cryptoName);
+                    Matcher m = pattern.matcher(cryptoName);
+                    if (m.find()) {
+                        System.out.println(cryptoName);
+                        cryptoName = m.group(0);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -109,26 +126,34 @@ public class CryptoCalculator extends AppCompatActivity {
     public void updateResult() {
         TextView displayBox = (TextView)findViewById(R.id.textView);
         displayBox.setText(inputDisplay);
+
+        if (cryptoPrice != null) {
+            String formattedResult = String.format("%.8f", Double.parseDouble(String.valueOf(inputDisplay)) / cryptoPrice);
+            displayBox.setText("$" + inputDisplay + "\n" + fiat + " -> " + cryptoName + "\n" + formattedResult);
+        } else {
+            displayBox.setText(inputDisplay);
+        }
     }
 
     public void appendResult(View v) {
         Button inputButton = (Button)v;
-        if (inputButton.getText().toString().equals(".") && inputDisplay.indexOf(".") > -1) {
-            return;
-        }
-        else if (inputButton.getText().toString().equals("⌫")) {
-            if (inputDisplay.length() == 0) {
+        if (inputDisplay.length() < 16 && inputDisplay.indexOf(".")-inputDisplay.charAt(inputDisplay.length() - 1) < 3) {
+            if (inputButton.getText().toString().equals(".") && inputDisplay.indexOf(".") > -1) {
                 return;
-            }
-            inputDisplay.deleteCharAt(inputDisplay.length() - 1);
-        } else {
-            if (inputDisplay.length() == 1 && inputDisplay.charAt(0) == '0') {
-                inputDisplay.replace(0,1, inputButton.getText().toString());
+            } else if (inputButton.getText().toString().equals("⌫")) {
+                if (inputDisplay.length() == 0) {
+                    return;
+                }
+                inputDisplay.deleteCharAt(inputDisplay.length() - 1);
             } else {
-                inputDisplay.append(inputButton.getText().toString());
+                if (inputDisplay.length() == 1 && inputDisplay.charAt(0) == '0') {
+                    inputDisplay.replace(0, 1, inputButton.getText().toString());
+                } else {
+                    inputDisplay.append(inputButton.getText().toString());
+                }
             }
+            updateResult();
         }
-        updateResult();
     }
 
     public void clearResult(View v) {
