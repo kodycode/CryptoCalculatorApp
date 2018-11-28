@@ -1,19 +1,10 @@
 package com.example.kody.cryptocalculator;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,17 +13,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.lang.reflect.Array;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +54,6 @@ public class CryptoCalculator extends AppCompatActivity {
     }
 
     private void getCryptoCurrencyData() {
-        final TextView displayBox = (TextView)findViewById(R.id.textView);
         RequestQueue queue = Volley.newRequestQueue(this);
         String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0&convert=EUR";
 

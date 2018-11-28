@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class CryptoCurrencySearch extends AppCompatActivity {
