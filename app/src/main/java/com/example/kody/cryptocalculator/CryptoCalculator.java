@@ -72,7 +72,7 @@ public class CryptoCalculator extends AppCompatActivity {
     private void getCryptoCurrencyData() {
         final TextView displayBox = (TextView)findViewById(R.id.textView);
         RequestQueue queue = Volley.newRequestQueue(this);
-        String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0";
+        String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0&convert=EUR";
 
         // Obtains all ticker data
         JsonObjectRequest tickerRequest = new JsonObjectRequest
