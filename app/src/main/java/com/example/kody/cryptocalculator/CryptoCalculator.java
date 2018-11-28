@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 public class CryptoCalculator extends AppCompatActivity {
 
     StringBuffer inputDisplay;
+    StringBuffer decimalInputDisplay;
     JSONObject tickerData;
     HashMap<String, List<Double>> cryptoData;
     boolean isEUR; // 1 if USD, 0 if EUR
@@ -40,9 +41,10 @@ public class CryptoCalculator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         inputDisplay = new StringBuffer("0");
+        decimalInputDisplay = new StringBuffer("");
         tickerData = new JSONObject();
         cryptoData = new HashMap<>();
-        isEUR = true;
+        isEUR = false;
         currentFiat = "USD";
         fiatSymbol = '$';
         cryptoName = "Bitcoin (BTC)";
@@ -85,7 +87,6 @@ public class CryptoCalculator extends AppCompatActivity {
                                 String currencyName = currencyObject.getString("name");
                                 String currencySymbol = currencyObject.getString("symbol");
                                 JSONObject currencyQuotes = currencyObject.getJSONObject("quotes");
-                                // JSONObject currencyFiat = currencyQuotes.getJSONObject(fiat);
                                 List<Double> fiatPrices = new ArrayList<>();
                                 Iterator<?> quoteKeys = currencyQuotes.keys();
                                 while (quoteKeys.hasNext()) {
@@ -93,7 +94,6 @@ public class CryptoCalculator extends AppCompatActivity {
                                     fiatPrices.add(currencyQuotes.getJSONObject(fiat).getDouble("price"));
                                 }
                                 cryptoData.put(currencyName + " (" + currencySymbol + ")", fiatPrices);
-                                // Double currencyPrice = currencyFiat.getDouble("price");
                             }
                             setCryptoSetting();
                         } catch (JSONException e) {
@@ -130,32 +130,38 @@ public class CryptoCalculator extends AppCompatActivity {
 
     public void updateResult() {
         TextView displayBox = (TextView)findViewById(R.id.textView);
+        String formattedInputDisplay = String.format("%,d", Integer.parseInt(inputDisplay.toString()));
         if (!cryptoPrice.isEmpty()) {
-            String formattedResult = String.format("%.8f", Double.parseDouble(String.valueOf(inputDisplay)) / cryptoPrice.get(isEUR ? 1 : 0));
-            
-            displayBox.setText(fiatSymbol.toString() + inputDisplay + "\n" + currentFiat + " ⇨ " + cryptoName + "\n" + formattedResult);
-        } else {
-            displayBox.setText(inputDisplay);
+            String formattedResult = String.format("%,.8f", Double.parseDouble(String.valueOf(inputDisplay.toString() + decimalInputDisplay.toString())) / cryptoPrice.get(isEUR ? 1 : 0));
+            displayBox.setText(fiatSymbol.toString() + formattedInputDisplay + decimalInputDisplay + "\n" + currentFiat + " ⇨ " + cryptoName + "\n" + formattedResult);
         }
     }
 
     public void appendResult(View v) {
         Button inputButton = (Button)v;
         if (inputButton.getText().toString().equals("⌫")) {
-            if (inputDisplay.length() <= 1) {
-                inputDisplay.setCharAt(0, '0');
+            if (decimalInputDisplay.length() > 0) {
+                decimalInputDisplay.deleteCharAt(decimalInputDisplay.length() - 1);
             } else {
-                inputDisplay.deleteCharAt(inputDisplay.length() - 1);
+                if (inputDisplay.length() <= 1) {
+                    inputDisplay.setCharAt(0, '0');
+                } else {
+                    inputDisplay.deleteCharAt(inputDisplay.length() - 1);
+                }
             }
-        }
-        else if (inputDisplay.length() < 16) {
-            if (inputDisplay.indexOf(".") != -1 &&
-                    (inputDisplay.length()-1) - inputDisplay.indexOf(".") >= 2) {
-                return;
-            } else if (inputButton.getText().toString().equals(".") &&
-                    inputDisplay.indexOf(".") > -1) {
-                return;
+        } else if (decimalInputDisplay.length() < 4) {
+            if (inputButton.getText().toString().equals(".") || decimalInputDisplay.indexOf(".") > -1) {
+                    if (decimalInputDisplay.length() >= 3) {
+                        return;
+                    } else if (inputButton.getText().toString().equals(".") &&
+                             decimalInputDisplay.indexOf(".") > -1) {
+                        return;
+                    }
+                    decimalInputDisplay.append(inputButton.getText().toString());
             } else {
+                if (inputDisplay.length() >= 9) {
+                    return;
+                }
                 if (inputDisplay.length() == 1 && inputDisplay.charAt(0) == '0' &&
                         !inputButton.getText().toString().equals(".")) {
                     inputDisplay.replace(0, 1, inputButton.getText().toString());
@@ -169,6 +175,7 @@ public class CryptoCalculator extends AppCompatActivity {
 
     public void clearResult(View v) {
         inputDisplay = new StringBuffer("0");
+        decimalInputDisplay = new StringBuffer("");
         updateResult();
     }
 
