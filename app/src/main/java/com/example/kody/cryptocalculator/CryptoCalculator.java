@@ -43,7 +43,7 @@ public class CryptoCalculator extends AppCompatActivity {
     JSONObject tickerData = new JSONObject();
     HashMap<String, Double> cryptoData = new HashMap<String, Double>();
     String fiat = "USD";
-    String cryptoName;
+    String cryptoName = "Bitcoin (BTC)";
     Double cryptoPrice;
     // String APIKey = "57767db4-a9c8-4ba0-863e-7e299d41363a";
 
@@ -53,14 +53,27 @@ public class CryptoCalculator extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_crypto_calculator);
         getCryptoCurrencyData();
-        updateResult();
+    }
+
+    private void setCryptoSetting() {
+        try {
+            Pattern pattern = Pattern.compile("(?<=\\().*(?=\\))");
+            cryptoPrice = cryptoData.get(cryptoName);
+            Matcher m = pattern.matcher(cryptoName);
+            if (m.find()) {
+                cryptoName = m.group(0);
+            }
+            updateResult();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void getCryptoCurrencyData() {
         final TextView displayBox = (TextView)findViewById(R.id.textView);
         RequestQueue queue = Volley.newRequestQueue(this);
         String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0";
-        System.out.println("test");
+
         // Obtains all ticker data
         JsonObjectRequest tickerRequest = new JsonObjectRequest
                 (Request.Method.GET, tickerURL, null, new Response.Listener<JSONObject>() {
@@ -80,7 +93,7 @@ public class CryptoCalculator extends AppCompatActivity {
                                 Double currencyPrice = currencyFiat.getDouble("price");
                                 cryptoData.put(currencyName + " (" + currencySymbol + ")", currencyPrice);
                             }
-                            System.out.println("Done");
+                            setCryptoSetting();
                         } catch (JSONException e) {
                             System.out.println(e.getMessage());
                         }
@@ -107,18 +120,8 @@ public class CryptoCalculator extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                try {
-                    Pattern pattern = Pattern.compile("(?<=\\().*(?=\\))");
-                    cryptoName = data.getStringExtra("currencyName");
-                    cryptoPrice = cryptoData.get(cryptoName);
-                    Matcher m = pattern.matcher(cryptoName);
-                    if (m.find()) {
-                        System.out.println(cryptoName);
-                        cryptoName = m.group(0);
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+                cryptoName = data.getStringExtra("currencyName");
+                setCryptoSetting();
             }
         }
     }
@@ -129,7 +132,7 @@ public class CryptoCalculator extends AppCompatActivity {
 
         if (cryptoPrice != null) {
             String formattedResult = String.format("%.8f", Double.parseDouble(String.valueOf(inputDisplay)) / cryptoPrice);
-            displayBox.setText("$" + inputDisplay + "\n" + fiat + " -> " + cryptoName + "\n" + formattedResult);
+            displayBox.setText("$" + inputDisplay + "\n" + fiat + " ⇨ " + cryptoName + "\n" + formattedResult);
         } else {
             displayBox.setText(inputDisplay);
         }
@@ -137,23 +140,30 @@ public class CryptoCalculator extends AppCompatActivity {
 
     public void appendResult(View v) {
         Button inputButton = (Button)v;
-        if (inputDisplay.length() < 16 && inputDisplay.indexOf(".")-inputDisplay.charAt(inputDisplay.length() - 1) < 3) {
-            if (inputButton.getText().toString().equals(".") && inputDisplay.indexOf(".") > -1) {
-                return;
-            } else if (inputButton.getText().toString().equals("⌫")) {
-                if (inputDisplay.length() == 0) {
-                    return;
-                }
-                inputDisplay.deleteCharAt(inputDisplay.length() - 1);
+        if (inputButton.getText().toString().equals("⌫")) {
+            if (inputDisplay.length() <= 1) {
+                inputDisplay.setCharAt(0, '0');
             } else {
-                if (inputDisplay.length() == 1 && inputDisplay.charAt(0) == '0') {
+                inputDisplay.deleteCharAt(inputDisplay.length() - 1);
+            }
+        }
+        else if (inputDisplay.length() < 16) {
+            if (inputDisplay.indexOf(".") != -1 &&
+                    (inputDisplay.length()-1) - inputDisplay.indexOf(".") >= 2) {
+                return;
+            } else if (inputButton.getText().toString().equals(".") &&
+                    inputDisplay.indexOf(".") > -1) {
+                return;
+            } else {
+                if (inputDisplay.length() == 1 && inputDisplay.charAt(0) == '0' &&
+                        !inputButton.getText().toString().equals(".")) {
                     inputDisplay.replace(0, 1, inputButton.getText().toString());
                 } else {
                     inputDisplay.append(inputButton.getText().toString());
                 }
             }
-            updateResult();
         }
+        updateResult();
     }
 
     public void clearResult(View v) {

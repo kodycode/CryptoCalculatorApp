@@ -62,7 +62,6 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/result_view"
         android:gravity="top|center"
-        android:text="Hello World!"
         android:textColor="@android:color/white"
         android:textSize="36sp"
         android:textStyle="bold"
