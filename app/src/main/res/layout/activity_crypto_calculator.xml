@@ -52,6 +52,7 @@
             android:layout_weight="1"
             android:background="@drawable/fiat_crypto_view"
             android:text="@string/fiat"
+            android:onClick="changeFiat"
             android:textColor="@color/bitcoinorange" />
     </LinearLayout>
 

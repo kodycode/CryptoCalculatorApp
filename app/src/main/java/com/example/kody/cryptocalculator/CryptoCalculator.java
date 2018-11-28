@@ -16,36 +16,49 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CryptoCalculator extends AppCompatActivity {
 
-    StringBuffer inputDisplay = new StringBuffer("0");
-    JSONObject tickerData = new JSONObject();
-    HashMap<String, Double> cryptoData = new HashMap<String, Double>();
-    String fiat = "USD";
-    String cryptoName = "Bitcoin (BTC)";
-    Double cryptoPrice;
+    StringBuffer inputDisplay;
+    JSONObject tickerData;
+    HashMap<String, List<Double>> cryptoData;
+    boolean isEUR; // 1 if USD, 0 if EUR
+    String currentFiat;
+    Character fiatSymbol;
+    String cryptoName;
+    List<Double> cryptoPrice;
     // String APIKey = "57767db4-a9c8-4ba0-863e-7e299d41363a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
+        inputDisplay = new StringBuffer("0");
+        tickerData = new JSONObject();
+        cryptoData = new HashMap<>();
+        isEUR = true;
+        currentFiat = "USD";
+        fiatSymbol = '$';
+        cryptoName = "Bitcoin (BTC)";
         setContentView(R.layout.activity_crypto_calculator);
         getCryptoCurrencyData();
     }
 
     private void setCryptoSetting() {
         try {
+            Button cryptoBtn = (Button)findViewById(R.id.cryptoBtn);
             Pattern pattern = Pattern.compile("(?<=\\().*(?=\\))");
             cryptoPrice = cryptoData.get(cryptoName);
             Matcher m = pattern.matcher(cryptoName);
             if (m.find()) {
                 cryptoName = m.group(0);
+                cryptoBtn.setText(cryptoName);
             }
             updateResult();
         } catch (Exception e) {
@@ -55,7 +68,7 @@ public class CryptoCalculator extends AppCompatActivity {
 
     private void getCryptoCurrencyData() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0&convert=EUR";
+        String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0&convert=EUR&sort=id";
 
         // Obtains all ticker data
         JsonObjectRequest tickerRequest = new JsonObjectRequest
@@ -72,9 +85,15 @@ public class CryptoCalculator extends AppCompatActivity {
                                 String currencyName = currencyObject.getString("name");
                                 String currencySymbol = currencyObject.getString("symbol");
                                 JSONObject currencyQuotes = currencyObject.getJSONObject("quotes");
-                                JSONObject currencyFiat = currencyQuotes.getJSONObject("USD");
-                                Double currencyPrice = currencyFiat.getDouble("price");
-                                cryptoData.put(currencyName + " (" + currencySymbol + ")", currencyPrice);
+                                // JSONObject currencyFiat = currencyQuotes.getJSONObject(fiat);
+                                List<Double> fiatPrices = new ArrayList<>();
+                                Iterator<?> quoteKeys = currencyQuotes.keys();
+                                while (quoteKeys.hasNext()) {
+                                    String fiat = (String) quoteKeys.next();
+                                    fiatPrices.add(currencyQuotes.getJSONObject(fiat).getDouble("price"));
+                                }
+                                cryptoData.put(currencyName + " (" + currencySymbol + ")", fiatPrices);
+                                // Double currencyPrice = currencyFiat.getDouble("price");
                             }
                             setCryptoSetting();
                         } catch (JSONException e) {
@@ -111,11 +130,10 @@ public class CryptoCalculator extends AppCompatActivity {
 
     public void updateResult() {
         TextView displayBox = (TextView)findViewById(R.id.textView);
-        displayBox.setText(inputDisplay);
-
-        if (cryptoPrice != null) {
-            String formattedResult = String.format("%.8f", Double.parseDouble(String.valueOf(inputDisplay)) / cryptoPrice);
-            displayBox.setText("$" + inputDisplay + "\n" + fiat + " ⇨ " + cryptoName + "\n" + formattedResult);
+        if (!cryptoPrice.isEmpty()) {
+            String formattedResult = String.format("%.8f", Double.parseDouble(String.valueOf(inputDisplay)) / cryptoPrice.get(isEUR ? 1 : 0));
+            
+            displayBox.setText(fiatSymbol.toString() + inputDisplay + "\n" + currentFiat + " ⇨ " + cryptoName + "\n" + formattedResult);
         } else {
             displayBox.setText(inputDisplay);
         }
@@ -151,6 +169,21 @@ public class CryptoCalculator extends AppCompatActivity {
 
     public void clearResult(View v) {
         inputDisplay = new StringBuffer("0");
+        updateResult();
+    }
+
+    public void changeFiat(View v) {
+        Button fiatBtn = (Button)findViewById(R.id.fiatBtn);
+        if (isEUR) {
+            currentFiat = "USD";
+            fiatSymbol = '$';
+            isEUR = false;
+        } else {
+            currentFiat = "EUR";
+            fiatSymbol = '€';
+            isEUR = true;
+        }
+        fiatBtn.setText(currentFiat);
         updateResult();
     }
 }
