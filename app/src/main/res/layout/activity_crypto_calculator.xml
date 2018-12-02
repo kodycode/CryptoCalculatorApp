@@ -14,7 +14,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="4dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/inputDisplayView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,15 +33,15 @@
             android:textColor="@color/bitcoinorange" />
 
         <Button
-            android:id="@+id/clearBtn"
+            android:id="@+id/switchBtn"
             android:layout_width="30dp"
             android:layout_height="36dp"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:layout_weight="1"
             android:background="@drawable/fiat_crypto_view"
-            android:onClick="clearResult"
-            android:text="@string/clear"
+            android:onClick="setSwitchMode"
+            android:text="@string/switchText"
             android:textColor="@color/bitcoinorange" />
 
         <Button
@@ -51,185 +51,232 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/fiat_crypto_view"
-            android:text="@string/fiat"
             android:onClick="changeFiat"
+            android:text="@string/fiat"
             android:textColor="@color/bitcoinorange" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="50dp"
+        android:id="@+id/inputDisplayView"
+        android:layout_width="383dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="40dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/result_view"
         android:gravity="top|center"
         android:textColor="@android:color/white"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/conversionView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="362dp"
-        android:layout_gravity="bottom"
-        android:layout_marginEnd="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginStart="24dp"
+    <TextView
+        android:id="@+id/conversionView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="141dp"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="141dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="60dp"
+        android:gravity="top|center"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/resultView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/resultView"
+        android:layout_width="327dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="8dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="top|center"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/clearBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conversionView" />
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="86dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="250dp"
+        android:layout_weight="1"
+        android:background="@drawable/fiat_crypto_view"
+        android:onClick="clearResult"
+        android:text="@string/clear"
+        android:textColor="@color/bitcoinorange"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:columnCount="3"
+        android:orientation="vertical"
+        android:rowCount="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clearBtn">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:orientation="horizontal">
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0.5dp"
+            android:layout_weight="1.33"
+            android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/sevenBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="7"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
+            <Button
+                android:id="@+id/sevenBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="7"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
 
-                <Button
-                    android:id="@+id/eightBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:lineSpacingExtra="36sp"
-                    android:onClick="appendResult"
-                    android:text="8"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
+            <Button
+                android:id="@+id/eightBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="8"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
 
-                <Button
-                    android:id="@+id/nineBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="9"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
+            <Button
+                android:id="@+id/nineBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="9"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+        </TableRow>
 
-            </LinearLayout>
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0.5dp"
+            android:layout_weight="1.33">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginBottom="1dp"
-                android:layout_marginTop="1dp"
-                android:orientation="horizontal">
+            <Button
+                android:id="@+id/fourBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="4"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
 
-                <Button
-                    android:id="@+id/fourBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="4"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
+            <Button
+                android:id="@+id/fiveBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="5"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
 
-                <Button
-                    android:id="@+id/fiveBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="5"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
+            <Button
+                android:id="@+id/sixBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="6"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
 
-                <Button
-                    android:id="@+id/sixBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="6"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
+        </TableRow>
 
-            </LinearLayout>
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.33">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+            <Button
+                android:id="@+id/decimalBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="."
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
 
-                <Button
-                    android:id="@+id/decimalBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="."
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
+            <Button
+                android:id="@+id/zeroBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="0"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
 
-                <Button
-                    android:id="@+id/zeroBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="0"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
-
-                <Button
-                    android:id="@+id/backspaceBtn"
-                    android:layout_width="107dp"
-                    android:layout_height="120dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_button_view"
-                    android:onClick="appendResult"
-                    android:text="⌫"
-                    android:textColor="@color/bitcoinorange"
-                    android:textSize="36sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </RelativeLayout>
+            <Button
+                android:id="@+id/backspaceBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1.33"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="⌫"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+        </TableRow>
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

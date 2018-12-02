@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class CryptoCalculator extends AppCompatActivity {
     JSONObject tickerData;
     HashMap<String, List<Double>> cryptoData;
     boolean isEUR; // 1 if USD, 0 if EUR
+    boolean switched;
     String currentFiat;
     Character fiatSymbol;
     String cryptoName;
@@ -45,6 +47,7 @@ public class CryptoCalculator extends AppCompatActivity {
         tickerData = new JSONObject();
         cryptoData = new HashMap<>();
         isEUR = false;
+        switched = false;
         currentFiat = "USD";
         fiatSymbol = '$';
         cryptoName = "Bitcoin (BTC)";
@@ -129,11 +132,23 @@ public class CryptoCalculator extends AppCompatActivity {
     }
 
     public void updateResult() {
-        TextView displayBox = (TextView)findViewById(R.id.textView);
+        TextView displayBox = (TextView)findViewById(R.id.inputDisplayView);
+        TextView conversionView = (TextView)findViewById(R.id.conversionView);
+        TextView resultView = (TextView)findViewById(R.id.resultView);
         String formattedInputDisplay = String.format("%,d", Integer.parseInt(inputDisplay.toString()));
         if (!cryptoPrice.isEmpty()) {
-            String formattedResult = String.format("%,.8f", Double.parseDouble(String.valueOf(inputDisplay.toString() + decimalInputDisplay.toString())) / cryptoPrice.get(isEUR ? 1 : 0));
-            displayBox.setText(fiatSymbol.toString() + formattedInputDisplay + decimalInputDisplay + "\n" + currentFiat + " ⇨ " + cryptoName + "\n" + formattedResult);
+            String formattedResult;
+            if (switched) {
+                formattedResult = String.format("%,.2f", Double.parseDouble(String.valueOf(inputDisplay.toString() + decimalInputDisplay.toString())) * cryptoPrice.get(isEUR ? 1 : 0));
+                displayBox.setText(formattedInputDisplay + decimalInputDisplay);
+                conversionView.setText(cryptoName + "\n⇅\n" + currentFiat);
+                resultView.setText(formattedResult);
+            } else {
+                formattedResult = String.format("%,.8f", Double.parseDouble(String.valueOf(inputDisplay.toString() + decimalInputDisplay.toString())) / cryptoPrice.get(isEUR ? 1 : 0));
+                displayBox.setText(fiatSymbol.toString() + formattedInputDisplay + decimalInputDisplay);
+                conversionView.setText(currentFiat + "\n⇅\n" + cryptoName);
+                resultView.setText(formattedResult);
+            }
         }
     }
 
@@ -191,6 +206,11 @@ public class CryptoCalculator extends AppCompatActivity {
             isEUR = true;
         }
         fiatBtn.setText(currentFiat);
+        updateResult();
+    }
+
+    public void setSwitchMode(View v) {
+        switched = switched ? false : true;
         updateResult();
     }
 }

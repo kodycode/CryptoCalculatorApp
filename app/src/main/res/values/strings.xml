@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CryptoCalculator</string>
     <string name="cryptocurrency">BTC</string>
+    <string name="switchText">switch</string>
     <string name="clear">Clear</string>
     <string name="fiat">USD</string>
     <string-array name="test">
