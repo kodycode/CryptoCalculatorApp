@@ -164,9 +164,10 @@ public class CryptoCalculator extends AppCompatActivity {
                     inputDisplay.deleteCharAt(inputDisplay.length() - 1);
                 }
             }
-        } else if (decimalInputDisplay.length() < 4) {
+            updateResult();
+        } else if (decimalInputDisplay.length() < 10) {
             if (inputButton.getText().toString().equals(".") || decimalInputDisplay.indexOf(".") > -1) {
-                    if (decimalInputDisplay.length() >= 3) {
+                    if (decimalInputDisplay.length() >= 10) {
                         return;
                     } else if (inputButton.getText().toString().equals(".") &&
                              decimalInputDisplay.indexOf(".") > -1) {
@@ -184,8 +185,8 @@ public class CryptoCalculator extends AppCompatActivity {
                     inputDisplay.append(inputButton.getText().toString());
                 }
             }
+            updateResult();
         }
-        updateResult();
     }
 
     public void clearResult(View v) {

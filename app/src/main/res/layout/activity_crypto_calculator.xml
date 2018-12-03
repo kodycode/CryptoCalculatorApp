@@ -58,7 +58,7 @@
 
     <TextView
         android:id="@+id/inputDisplayView"
-        android:layout_width="383dp"
+        android:layout_width="327dp"
         android:layout_height="54dp"
         android:layout_marginTop="40dp"
         android:autoSizeTextType="uniform"
@@ -98,6 +98,8 @@
         android:layout_width="327dp"
         android:layout_height="54dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
         android:autoSizeTextType="uniform"
         android:gravity="top|center"
         android:textColor="@android:color/white"
@@ -113,9 +115,7 @@
         android:layout_width="86dp"
         android:layout_height="36dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="245dp"
         android:layout_weight="1"
         android:background="@drawable/fiat_crypto_view"
         android:onClick="clearResult"
@@ -123,36 +123,36 @@
         android:textColor="@color/bitcoinorange"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
         android:columnCount="3"
-        android:orientation="vertical"
-        android:rowCount="3"
+        android:orientation="horizontal"
+        android:rowCount="4"
+        android:stretchColumns="*"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clearBtn">
 
 
         <TableRow
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_weight="1.33"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0">
 
             <Button
                 android:id="@+id/sevenBtn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.33"
+                style="?attr/buttonBarButtonStyle"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="7"
@@ -161,11 +161,9 @@
 
             <Button
                 android:id="@+id/eightBtn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1.33"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_weight="1"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="8"
@@ -174,28 +172,31 @@
 
             <Button
                 android:id="@+id/nineBtn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.33"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="9"
                 android:textColor="@color/bitcoinorange"
-                android:textSize="36sp" />
+                android:textSize="36sp"
+                tools:layout_editor_absoluteX="256dp"
+                tools:layout_editor_absoluteY="291dp" />
+
         </TableRow>
 
         <TableRow
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.5dp"
-            android:layout_weight="1.33">
+            android:layout_marginTop="0.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/fourBtn"
+                style="?attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_weight="1.33"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="4"
@@ -204,12 +205,11 @@
 
             <Button
                 android:id="@+id/fiveBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1.33"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="5"
@@ -218,9 +218,11 @@
 
             <Button
                 android:id="@+id/sixBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.33"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="6"
@@ -230,18 +232,65 @@
         </TableRow>
 
         <TableRow
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.33">
+            android:layout_marginTop="0.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/oneBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="1"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/twoBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="2"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/threeBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="3"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="0.25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/decimalBtn"
+                style="?attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="1.33"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="."
@@ -250,13 +299,11 @@
 
             <Button
                 android:id="@+id/zeroBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1.33"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="0"
@@ -265,12 +312,11 @@
 
             <Button
                 android:id="@+id/backspaceBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_weight="1.33"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/input_button_view"
                 android:onClick="appendResult"
                 android:text="⌫"
