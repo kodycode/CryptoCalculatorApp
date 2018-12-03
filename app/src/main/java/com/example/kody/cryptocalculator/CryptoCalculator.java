@@ -32,6 +32,7 @@ public class CryptoCalculator extends AppCompatActivity {
     HashMap<String, List<Double>> cryptoData;
     boolean isEUR; // 1 if USD, 0 if EUR
     boolean switched;
+    boolean isLoaded;
     String currentFiat;
     Character fiatSymbol;
     String cryptoName;
@@ -42,12 +43,13 @@ public class CryptoCalculator extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        inputDisplay = new StringBuffer("0");
+        inputDisplay = new StringBuffer("Loading..");
         decimalInputDisplay = new StringBuffer("");
         tickerData = new JSONObject();
         cryptoData = new HashMap<>();
         isEUR = false;
         switched = false;
+        isLoaded = false;
         currentFiat = "USD";
         fiatSymbol = '$';
         cryptoName = "Bitcoin (BTC)";
@@ -73,7 +75,9 @@ public class CryptoCalculator extends AppCompatActivity {
 
     private void getCryptoCurrencyData() {
         RequestQueue queue = Volley.newRequestQueue(this);
+        final TextView displayBox = (TextView)findViewById(R.id.inputDisplayView);
         String tickerURL ="https://api.coinmarketcap.com/v2/ticker/?limit=0&convert=EUR&sort=id";
+        displayBox.setText(inputDisplay.toString());
 
         // Obtains all ticker data
         JsonObjectRequest tickerRequest = new JsonObjectRequest
@@ -98,6 +102,8 @@ public class CryptoCalculator extends AppCompatActivity {
                                 }
                                 cryptoData.put(currencyName + " (" + currencySymbol + ")", fiatPrices);
                             }
+                            isLoaded = true;
+                            inputDisplay = new StringBuffer("0");
                             setCryptoSetting();
                         } catch (JSONException e) {
                             System.out.println(e.getMessage());
@@ -142,9 +148,9 @@ public class CryptoCalculator extends AppCompatActivity {
                 formattedResult = String.format("%,.2f", Double.parseDouble(String.valueOf(inputDisplay.toString() + decimalInputDisplay.toString())) * cryptoPrice.get(isEUR ? 1 : 0));
                 displayBox.setText(formattedInputDisplay + decimalInputDisplay);
                 conversionView.setText(cryptoName + "\n⇅\n" + currentFiat);
-                resultView.setText(formattedResult);
+                resultView.setText(fiatSymbol.toString() + formattedResult);
             } else {
-                formattedResult = String.format("%,.8f", Double.parseDouble(String.valueOf(inputDisplay.toString() + decimalInputDisplay.toString())) / cryptoPrice.get(isEUR ? 1 : 0));
+                formattedResult = String.format("%,.9f", Double.parseDouble(String.valueOf(inputDisplay.toString() + decimalInputDisplay.toString())) / cryptoPrice.get(isEUR ? 1 : 0));
                 displayBox.setText(fiatSymbol.toString() + formattedInputDisplay + decimalInputDisplay);
                 conversionView.setText(currentFiat + "\n⇅\n" + cryptoName);
                 resultView.setText(formattedResult);
@@ -153,65 +159,73 @@ public class CryptoCalculator extends AppCompatActivity {
     }
 
     public void appendResult(View v) {
-        Button inputButton = (Button)v;
-        if (inputButton.getText().toString().equals("⌫")) {
-            if (decimalInputDisplay.length() > 0) {
-                decimalInputDisplay.deleteCharAt(decimalInputDisplay.length() - 1);
-            } else {
-                if (inputDisplay.length() <= 1) {
-                    inputDisplay.setCharAt(0, '0');
+        if (isLoaded) {
+            Button inputButton = (Button)v;
+            if (inputButton.getText().toString().equals("⌫")) {
+                if (decimalInputDisplay.length() > 0) {
+                    decimalInputDisplay.deleteCharAt(decimalInputDisplay.length() - 1);
                 } else {
-                    inputDisplay.deleteCharAt(inputDisplay.length() - 1);
+                    if (inputDisplay.length() <= 1) {
+                        inputDisplay.setCharAt(0, '0');
+                    } else {
+                        inputDisplay.deleteCharAt(inputDisplay.length() - 1);
+                    }
                 }
-            }
-            updateResult();
-        } else if (decimalInputDisplay.length() < 10) {
-            if (inputButton.getText().toString().equals(".") || decimalInputDisplay.indexOf(".") > -1) {
+                updateResult();
+            } else if (decimalInputDisplay.length() < (switched ? 10 : 3)) {
+                if (inputButton.getText().toString().equals(".") || decimalInputDisplay.indexOf(".") > -1) {
                     if (decimalInputDisplay.length() >= 10) {
                         return;
                     } else if (inputButton.getText().toString().equals(".") &&
-                             decimalInputDisplay.indexOf(".") > -1) {
+                            decimalInputDisplay.indexOf(".") > -1) {
                         return;
                     }
                     decimalInputDisplay.append(inputButton.getText().toString());
-            } else {
-                if (inputDisplay.length() >= 9) {
-                    return;
-                }
-                if (inputDisplay.length() == 1 && inputDisplay.charAt(0) == '0' &&
-                        !inputButton.getText().toString().equals(".")) {
-                    inputDisplay.replace(0, 1, inputButton.getText().toString());
                 } else {
-                    inputDisplay.append(inputButton.getText().toString());
+                    if (inputDisplay.length() >= 9) {
+                        return;
+                    }
+                    if (inputDisplay.length() == 1 && inputDisplay.charAt(0) == '0' &&
+                            !inputButton.getText().toString().equals(".")) {
+                        inputDisplay.replace(0, 1, inputButton.getText().toString());
+                    } else {
+                        inputDisplay.append(inputButton.getText().toString());
+                    }
                 }
+                updateResult();
             }
-            updateResult();
         }
     }
 
     public void clearResult(View v) {
-        inputDisplay = new StringBuffer("0");
-        decimalInputDisplay = new StringBuffer("");
-        updateResult();
+        if (isLoaded) {
+            inputDisplay = new StringBuffer("0");
+            decimalInputDisplay = new StringBuffer("");
+            updateResult();
+        }
     }
 
     public void changeFiat(View v) {
-        Button fiatBtn = (Button)findViewById(R.id.fiatBtn);
-        if (isEUR) {
-            currentFiat = "USD";
-            fiatSymbol = '$';
-            isEUR = false;
-        } else {
-            currentFiat = "EUR";
-            fiatSymbol = '€';
-            isEUR = true;
+        if (isLoaded) {
+            Button fiatBtn = (Button) findViewById(R.id.fiatBtn);
+            if (isEUR) {
+                currentFiat = "USD";
+                fiatSymbol = '$';
+                isEUR = false;
+            } else {
+                currentFiat = "EUR";
+                fiatSymbol = '€';
+                isEUR = true;
+            }
+            fiatBtn.setText(currentFiat);
+            updateResult();
         }
-        fiatBtn.setText(currentFiat);
-        updateResult();
     }
 
     public void setSwitchMode(View v) {
-        switched = switched ? false : true;
-        updateResult();
+        if (isLoaded) {
+            switched = switched ? false : true;
+            clearResult(v);
+        }
     }
 }
