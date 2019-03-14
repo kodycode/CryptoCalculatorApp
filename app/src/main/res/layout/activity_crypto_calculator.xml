@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bitcoinorange"
+    tools:context=".CryptoCalculator">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/inputDisplayView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/cryptoBtn"
+            android:layout_width="30dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/fiat_crypto_view"
+            android:onClick="search"
+            android:text="@string/cryptocurrency"
+            android:textColor="@color/bitcoinorange" />
+
+        <Button
+            android:id="@+id/switchBtn"
+            android:layout_width="30dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_weight="1"
+            android:background="@drawable/fiat_crypto_view"
+            android:onClick="setSwitchMode"
+            android:text="@string/switchText"
+            android:textColor="@color/bitcoinorange" />
+
+        <Button
+            android:id="@+id/fiatBtn"
+            android:layout_width="30dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/fiat_crypto_view"
+            android:onClick="changeFiat"
+            android:text="@string/fiat"
+            android:textColor="@color/bitcoinorange" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/inputDisplayView"
+        android:layout_width="327dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="40dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/result_view"
+        android:gravity="top|center"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/conversionView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/conversionView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="141dp"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="141dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="60dp"
+        android:gravity="top|center"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/resultView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/resultView"
+        android:layout_width="327dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="top|center"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/clearBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conversionView" />
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="86dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="245dp"
+        android:layout_weight="1"
+        android:background="@drawable/fiat_crypto_view"
+        android:onClick="clearResult"
+        android:text="@string/clear"
+        android:textColor="@color/bitcoinorange"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:rowCount="4"
+        android:stretchColumns="*"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clearBtn">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0">
+
+            <Button
+                android:id="@+id/sevenBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="7"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/eightBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="8"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/nineBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="9"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp"
+                tools:layout_editor_absoluteX="256dp"
+                tools:layout_editor_absoluteY="291dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="0.55dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/fourBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="4"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/fiveBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="5"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/sixBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="6"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="0.1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/oneBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="1"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/twoBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="2"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/threeBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="3"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="0.25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/decimalBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="."
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/zeroBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="0"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/backspaceBtn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_marginLeft="0.5dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_button_view"
+                android:onClick="appendResult"
+                android:text="⌫"
+                android:textColor="@color/bitcoinorange"
+                android:textSize="36sp" />
+        </TableRow>
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>
